@@ -12,10 +12,11 @@ namespace HackerRank
         {
             Console.OutputEncoding = Encoding.UTF8;
             //Stairs.StairsHashes(6);
+            //FreeLance.RunProgram();
+
             //SherlockAndValidString.RunProgram();
 
-            FreeLance.RunProgram();
-
+            MinSteps.RunProgram();
             Console.ReadKey();
         }
     }

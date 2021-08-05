@@ -13,10 +13,10 @@ namespace HackerRank
             Console.OutputEncoding = Encoding.UTF8;
             //Stairs.StairsHashes(6);
             //FreeLance.RunProgram();
+            //MinSteps.RunProgram();
 
-            //SherlockAndValidString.RunProgram();
+            SherlockAndValidString.RunProgram();
 
-            MinSteps.RunProgram();
             Console.ReadKey();
         }
     }

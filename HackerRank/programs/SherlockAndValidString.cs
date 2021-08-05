@@ -11,7 +11,11 @@ namespace HackerRank.programs
         
         public static void RunProgram()
         {
-            CountFrequency("aaaabbcc");
+            CountFrequency("zaabbcc");
+            CountFrequency("zzzaabbcc");
+            CountFrequency("zzzaazzbbcc");
+            CountFrequency("zzzyyyaabbcc");
+            CountFrequency("zzzyyyabcc");
         }
 
         public static void CountFrequency(string x)
@@ -64,91 +68,28 @@ namespace HackerRank.programs
             }
         }
 
-        public static List<Frequency> Sorting(List<Frequency> frequencies)
-        {
-            for(int i = 0; i < frequencies.Count; i++)
-            {
-                var temp = frequencies.IndexOf(frequencies[i]);
-
-                
-            }
-            
-            return frequencies;
-        }
-
         public static bool CompareFrequency(List<Frequency> frequencies)
         {
-            ushort maxFrequency = frequencies.Max(charecter => charecter.quantity);
-            ushort minFrequency = frequencies.Max(charecter => charecter.quantity);
+            Frequency[] frequenciesArray = frequencies.ToArray();
+        
+            IOrderedEnumerable<Frequency> frequenciesArraySorted = from temp in frequenciesArray
+                                                                        orderby temp.quantity
+                                                                        select temp;
+            frequenciesArray = frequenciesArraySorted.ToArray();
 
-            IEnumerable<ushort> iListOfFrequencies = frequencies.Where(charakter => charakter.quantity == maxFrequency)
-                                                                  .Select(charackter => charackter.quantity);
-            
-            IEnumerable<ushort> iListOfMaxFrequencies = frequencies.Where(charakter => charakter.quantity == maxFrequency)
-                                                                  .Select(charackter => charackter.quantity);
+            //All frequencies are equal
+            if(frequenciesArray[0].quantity == frequenciesArray[frequenciesArray.Length - 1].quantity)
+                return true;
 
-            IEnumerable<ushort> iListOfMinFrequencies = frequencies.Where(charakter => charakter.quantity == minFrequency)
-                                                                  .Select(charackter => charackter.quantity);
+            //All frequencies are equal, and one letter meet's once 
+            if (frequenciesArray[1].quantity == frequenciesArray[frequenciesArray.Length - 1].quantity)
+                if(frequenciesArray[0].quantity == 1)                
+                    return true;
 
-            List<ushort> listOfFrequencies = iListOfFrequencies.ToList();       
-            List<ushort> listOfMaxFrequencies = iListOfMaxFrequencies.ToList();       
-            List<ushort> listOfMinFrequencies = iListOfMinFrequencies.ToList();
-
-
-            //Если все частоты равны
-            //Если все равны, а одна буква встречается 1 раз
-            //Если все равны, но одна буква на 1 больше, чем другие частоты.
-
-            var x = frequencies.ToArray();
-            Frequency temp = new Frequency();
-
-            for(int i = 0; i < x.Length; i++)
-            {
-                if(x[i].quantity == x[i + 1].quantity)
-                {
-                    continue;
-                }
-                else
-                {
-                    temp = x[i + 1];
-                    break;
-                }
-            }
-
-            if(x.First() == x.Last()) { }
-
-            for(int k = 0; k < frequencies.Count; k++)
-            {
-                bool isEqual = frequencies[k].quantity == frequencies[k + 1].quantity; 
-            }
-
-
-
-            foreach(Frequency frequency in frequencies)
-            {
-                int frequencyIndex = frequencies.IndexOf(frequency);
-                
-
-                int modFrequency = maxFrequency - frequency.quantity;
-
-
-
-                if (modFrequency >= 2)
-                {
-                    return false;
-                }
-                else
-                {
-                    if(listOfMaxFrequencies.Count >= 2)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-            }
+            //All frequencies are equal, and one letter greater once then others
+            if (frequenciesArray[0].quantity == frequenciesArray[frequenciesArray.Length - 2].quantity) 
+               if((frequenciesArray[frequenciesArray.Length - 1].quantity - frequenciesArray[frequenciesArray.Length - 2].quantity) == 1 )
+                    return true;
 
             return false;
         }

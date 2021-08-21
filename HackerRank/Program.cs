@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections;
+using System.Linq;
 using System.Text;
-using HackerRank.programs;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HackerRank
 {
     class Program
     {
-     
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -15,9 +15,18 @@ namespace HackerRank
             //FreeLance.RunProgram();
             //MinSteps.RunProgram();
 
-            SherlockAndValidString.RunProgram();
+            //SherlockAndValidString.RunProgram();
+
+            HackerRank.programs.Encription.MainEncription();
+
+
+
+            //experimental shit
+
+            
 
             Console.ReadKey();
         }
     }
+
 }

@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using HackerRank.programs;
+
 namespace HackerRank
 {
     class Program
@@ -14,19 +16,17 @@ namespace HackerRank
             //Stairs.StairsHashes(6);
             //FreeLance.RunProgram();
             //MinSteps.RunProgram();
-
             //SherlockAndValidString.RunProgram();
 
-            HackerRank.programs.Encription.MainEncription();
 
-
-
+            Console.WriteLine(new programs.easy.DiagonalDifference().CountDiagonalDifference(new System.Collections.Generic.List<System.Collections.Generic.List<int>>()));
+            
             //experimental shit
 
-            
+
+
 
             Console.ReadKey();
         }
     }
-
 }

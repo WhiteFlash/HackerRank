@@ -19,8 +19,19 @@ namespace HackerRank.programs
 
             if(span[0] * span[1] >= stroka.Length)
             {
+                char[,] arrayOfStrok = new char[(int)span[0], (int)span[1]];
+
                 Console.WriteLine("{0}, {1}", squareRoot, stroka);
 
+                //arrayOfStrok[0,0] = new char[] { { stroka.Substring(0, (int)span[1]).ToCharArray() } };
+
+                foreach (var x in arrayOfStrok)  
+                {  
+                    Console.WriteLine(x.ToString());
+                } 
+
+                stroka = stroka.Remove(0, (int)span[1]);
+                Console.WriteLine("{0}, {1}", squareRoot, stroka);
                 
 
             }

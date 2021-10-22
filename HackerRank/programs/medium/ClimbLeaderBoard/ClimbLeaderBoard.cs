@@ -17,28 +17,18 @@ namespace HackerRank.programs.medium
         /// <summary>
         /// Class helper for converting data from array of integers to objects with wto fields.
         /// </summary>
-        public class RankScore
+        public class RankScore : IEquatable<RankScore>
         {
             public int Rank { get; set; }
             public int Score { get; set; }
+
+            public bool Equals(RankScore other) => other != null && Rank == other.Rank && Score == other.Score;
+
+            public override bool Equals(object obj) => Equals(obj as RankScore);
+
+            public override int GetHashCode() => HashCode.Combine(Rank, Score);
         }
 
-        public static bool Compareobjects(List<RankScore> listOne, List<RankScore> listTwo)
-        {
-            if (listOne.Count == listTwo.Count)
-            {
-                for (int i = 0; i < listOne.Count; i++)
-                {
-                    if (listOne[i].Rank == listTwo[i].Rank &
-                        listOne[i].Score == listTwo[i].Score)
-                        continue;
-                    else
-                        return false;
-                }
-                return true;
-            }
-            return false;
-        }
         public static List<RankScore> ConvertionIntToObjects(List<int> gamesScores)
         {
             List<RankScore> rankScoreList = new List<RankScore>();

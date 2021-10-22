@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace HackerRank.programs.medium
 {
@@ -22,81 +19,65 @@ namespace HackerRank.programs.medium
             public int Rank { get; set; }
             public int Score { get; set; }
 
-            public bool Equals(RankScore other) => other != null && Rank == other.Rank && Score == other.Score;
+            public bool Equals(RankScore other) => other is not null && Rank == other.Rank && Score == other.Score;
 
             public override bool Equals(object obj) => Equals(obj as RankScore);
 
             public override int GetHashCode() => HashCode.Combine(Rank, Score);
         }
 
-        public static List<RankScore> ConvertionIntToObjects(List<int> gamesScores)
+        // There's no adequate decription what this function does and why it returns the same list as it accepts.
+        public static List<RankScore> SetGameRanks(List<RankScore> rankings)
         {
-            List<RankScore> rankScoreList = new List<RankScore>();
-
-            for (int i = 0; i < gamesScores.Count; i++)
+            // << Never ever handle errors like this, you will never be able to debug that code properly
+            // << This is a red flag for any code reviewer
+            int rank = 1;
+            for (int i = 0; i < rankings.Count - 1; i++) // The error you tried to handle was related to indexing
             {
-                rankScoreList.Add(new RankScore()
+                if (rankings[i].Score == rankings[i + 1].Score)
                 {
-                    Rank = i + 1,
-                    Score = gamesScores[i]
-                });
-            }
-            return rankScoreList;
-        }
-        public static List<RankScore> SetGameRanks(List<RankScore> list)
-        {
-            try
-            {
-                int rank = 1;
-                for (int i = 0; i < list.Count; i++)
+                    rankings[i].Rank = rank;
+                    rankings[i + 1].Rank = rank;
+                }
+                else
                 {
-                    if (list[i].Score == list[i + 1].Score)
-                    {
-                        list[i].Rank = rank;
-                        list[i + 1].Rank = rank;
-                    }
-                    else
-                    {
-                        list[i + 1].Rank = ++rank;
-                    }
+                    rankings[i + 1].Rank = ++rank;
                 }
             }
-            catch { }
-            return list;
+            return rankings;
         }
 
-        public static List<int> GetRanksInTable(List<RankScore> table, List<int> playerScores)
+        public static List<int> GetRanksInTable(List<RankScore> rankings, List<int> scores)
         {
-            List<int> matrix = new List<int>();
-            int rank = table.LastOrDefault().Rank;
+            var matrix = new List<int>();
+            var rank = rankings.LastOrDefault().Rank;
 
-            for (int i = 0; i < playerScores.Count; i++)
-            {
-                try
+            for (int i = 0; i < scores.Count; i++)
+            { // << Same here, it's a piece of shit error handling
+                var found = rankings.FirstOrDefault(element => element.Score <= scores[i]);
+                if (found is null)
                 {
-                    RankScore found = table.FirstOrDefault(element => element.Score <= playerScores[i]);
-                    if (found is null)
-                    {
-                        table.Add(new RankScore() { Score = playerScores[i], Rank = ++rank });
-                        matrix.Add(rank++);
-                    }
-                    else
-                    {
-                        matrix.Add(found.Rank);
-                    }
+                    rankings.Add(new RankScore() { Score = scores[i], Rank = ++rank });
+                    matrix.Add(rank++);
                 }
-                catch { }
+                else
+                {
+                    matrix.Add(found.Rank);
+                }
             }
             return matrix;
         }
+
+        // << Why do you have second freaking entry point? Are you trying to mislead the reviewer? )))
         public void Main()
         {
-            List<int> gameScores = new List<int> { 100, 100, 50, 40, 40, 20, 10 };
-            List<int> playerScores = new List<int> { 5, 25, 50, 120 };
+            var gameScores = new List<int> { 100, 100, 50, 40, 40, 20, 10 }; // << Use implicit types as much as posisble
+            var playerScores = new List<int> { 5, 25, 50, 120 }; // << Use implicit types as much as posisble
 
-            var temp = ConvertionIntToObjects(gameScores);
-            var temp2 = SetGameRanks(temp);
-            var result = GetRanksInTable(temp2, playerScores);
+            // << Name freaking variables properly
+            var rankings = gameScores.Select((x, i) => new RankScore { Rank = i + 1, Score = x }).ToList();
+            var updatedRankings = SetGameRanks(rankings);
+            var ranks = GetRanksInTable(updatedRankings, playerScores);
         }
     }
 }

@@ -11,6 +11,9 @@ namespace HackerRank.programs.medium
     /// </summary>
     public class ClimbLeaderBoard
     {
+        // Test, remove it
+        private readonly List<ClimbLeaderBoard> m_climbLeaderBoards = new List<ClimbLeaderBoard>();
+
         /// <summary>
         /// Class helper for converting data from array of integers to objects with wto fields.
         /// </summary>

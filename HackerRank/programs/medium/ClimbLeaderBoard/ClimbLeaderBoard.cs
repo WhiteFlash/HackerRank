@@ -47,6 +47,7 @@ namespace HackerRank.programs.medium
             return rankings;
         }
 
+        // Same crap, what this function does?
         public static List<int> GetRanksInTable(List<RankScore> rankings, List<int> scores)
         {
             var matrix = new List<int>();

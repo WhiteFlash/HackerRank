@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HackerRank.programs.easy
+namespace HackerRank.programs.easy;
+
+public static class DiagonalDifference
 {
-    public class DiagonalDifference
+    public static int CountDiagonalDifference(List<List<int>> arr)
     {
-        public int CountDiagonalDifference(List<List<int>> arr)
-        {
-            int total = 0;
+        var maxSize = arr.Max(a => a.Count);
+        var correctArray = arr.Where(x => x.Count == maxSize);
+        var primary = correctArray.Select((x, i) => x[i]).Sum();
+        var secondary = correctArray.Reverse().Select((x, i) => x[i]).Sum();
+        var result = primary - secondary;
 
-            for (int i = 0; i < arr.Count; i++)
-            {
-                for (int k = 0; k < arr.Count; k++)
-                {
-                    total = arr[i][k];
-
-                }
-            }
-
-            return total;
-        }
+        return Math.Abs(result);
     }
 }

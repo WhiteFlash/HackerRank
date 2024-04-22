@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace HackerRank.Tests;
+namespace HackerRank.Tests.easy;
 
 public class DiagonalDifferenceTests
 {

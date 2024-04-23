@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HackerRank.programs.medium;
@@ -13,10 +14,16 @@ public class ClimbLeaderBoard
     /// <summary>
     /// Class helper for converting data from array of integers to objects with wto fields.
     /// </summary>
-    public class RankScore
+    public class RankScore : IEquatable<RankScore>
     {
         public int Rank { get; set; }
         public int Score { get; set; }
+
+        public bool Equals(RankScore other) => other is not null && Rank == other.Rank && Score == other.Score;
+
+        public override bool Equals(object obj) => Equals(obj as RankScore);
+
+        public override int GetHashCode() => HashCode.Combine(Rank, Score);
     }
 
     public static bool CompareObjectsRanksAndScores(List<RankScore> listOne, List<RankScore> listTwo)
@@ -38,39 +45,17 @@ public class ClimbLeaderBoard
 
     public static List<RankScore> ParseRankingArray(List<int> gamesScores)
     {
-        var rankScoreList = new List<RankScore>();
+        var groupId = 0;
 
-        for (int i = 0; i < gamesScores.Count; i++)
-        {
-            rankScoreList.Add(new RankScore()
-            {
-                Rank = i + 1,
-                Score = gamesScores[i]
-            });
-        }
-        return rankScoreList;
+        return gamesScores
+             .Select((x, i) => new RankScore
+             {
+                 Score = x,
+                 Rank = (i > 0 && gamesScores[i - 1] == x) ? groupId : ++groupId
+             })
+             .ToList();
     }
-    public static List<RankScore> SetGameRanks(List<RankScore> list)
-    {
-        try
-        {
-            int rank = 1;
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].Score == list[i + 1].Score)
-                {
-                    list[i].Rank = rank;
-                    list[i + 1].Rank = rank;
-                }
-                else
-                {
-                    list[i + 1].Rank = ++rank;
-                }
-            }
-        }
-        catch { }
-        return list;
-    }
+   
 
     public static List<int> ClimbingLeaderboard(List<RankScore> table, List<int> playerScores)
     {
@@ -102,7 +87,5 @@ public class ClimbLeaderBoard
         List<int> playerScores = new List<int> { 5, 25, 50, 120 };
 
         var temp = ParseRankingArray(gameScores);
-        var temp2 = SetGameRanks(temp);
-        var result = ClimbingLeaderboard(temp2, playerScores);
     }
 }

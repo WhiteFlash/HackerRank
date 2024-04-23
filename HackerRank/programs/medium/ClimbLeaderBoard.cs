@@ -26,23 +26,6 @@ public class ClimbLeaderBoard
         public override int GetHashCode() => HashCode.Combine(Rank, Score);
     }
 
-    public static bool CompareObjectsRanksAndScores(List<RankScore> listOne, List<RankScore> listTwo)
-    {
-        if (listOne.Count == listTwo.Count)
-        {
-            for (int i = 0; i < listOne.Count; i++)
-            {
-                if (listOne[i].Rank == listTwo[i].Rank &
-                    listOne[i].Score == listTwo[i].Score)
-                    continue;
-                else
-                    return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
     public static List<RankScore> ParseRankingArray(List<int> gamesScores)
     {
         var groupId = 0;
@@ -55,37 +38,34 @@ public class ClimbLeaderBoard
              })
              .ToList();
     }
-   
 
-    public static List<int> ClimbingLeaderboard(List<RankScore> table, List<int> playerScores)
+    public static List<int> ClimbingLeaderboardRun(List<int> ranked, List<int> playerScores)
     {
-        List<int> matrix = new List<int>();
-        int rank = table.LastOrDefault().Rank;
+        var rankingSystem = new List<int>();
+        var groupedTablo = ranked.ToHashSet().ToList();
+
+
+        if (groupedTablo.First() == playerScores.First())
+            rankingSystem.Add(groupedTablo.Count);
+        else if (groupedTablo.First() > playerScores.First())
+            rankingSystem.Add(groupedTablo.Count + 1);
 
         for (int i = 0; i < playerScores.Count; i++)
         {
-            try
+            var valuesLowerThenScores = groupedTablo.Where(x => x <= playerScores[i]).ToList();
+            var highestValueFromLowest = valuesLowerThenScores.FirstOrDefault();
+
+            if (highestValueFromLowest > 0)
             {
-                RankScore found = table.FirstOrDefault(element => element.Score <= playerScores[i]);
-                if (found is null)
+                if (playerScores[i] >= highestValueFromLowest)
                 {
-                    table.Add(new RankScore() { Score = playerScores[i], Rank = ++rank });
-                    matrix.Add(rank++);
-                }
-                else
-                {
-                    matrix.Add(found.Rank);
+                    var rank = groupedTablo.IndexOf(highestValueFromLowest);
+                    rankingSystem.Add(rank + 1);
                 }
             }
-            catch { }
-        }
-        return matrix;
-    }
-    public void Main()
-    {
-        List<int> gameScores = new List<int> { 100, 100, 50, 40, 40, 20, 10 };
-        List<int> playerScores = new List<int> { 5, 25, 50, 120 };
 
-        var temp = ParseRankingArray(gameScores);
+        }
+
+        return rankingSystem;
     }
 }

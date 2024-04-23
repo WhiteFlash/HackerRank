@@ -26,29 +26,16 @@ public class ClimbLeaderBoardTest
         //Act
         List<RankScore> actual = ParseRankingArray(_rankingArray);
         //Assert
-        Assert.True(CompareObjectsRanksAndScores(expected, actual));
+        Assert.Equal(expected, actual);
 
     }
 
-    [Fact]
-    public void GetRanksInTableTest()
+    [Theory]
+    [ClassData(typeof(ClimbLeaderBoardData))]
+    public void ClimbingLeaderboardRunTest(List<int> tablo, List<int> playedGames, List<int> expected)
     {
-        //Arrange
-        List<int> expected = new List<int>() { 6, 4, 2, 1 };
-        //Act
-        var actual = ClimbingLeaderboard(new List<RankScore>()
-        {
-            new RankScore() { Rank = 1, Score = 100 },
-            new RankScore() { Rank = 1, Score = 100 },
-            new RankScore() { Rank = 2, Score = 50 },
-            new RankScore() { Rank = 3, Score = 40 },
-            new RankScore() { Rank = 3, Score = 40 },
-            new RankScore() { Rank = 4, Score = 20 },
-            new RankScore() { Rank = 5, Score = 10 }
-        }, new List<int> { 5, 25, 50, 120 });
+        var actual = ClimbingLeaderboardRun(tablo, playedGames);
         //Assert
         Assert.Equal(expected, actual);
     }
-
-
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace HackerRank.programs.medium;
 
@@ -41,31 +42,38 @@ public class ClimbLeaderBoard
 
     public static List<int> ClimbingLeaderboardRun(List<int> ranked, List<int> playerScores)
     {
-        var rankingSystem = new List<int>();
-        var groupedTablo = ranked.ToHashSet().ToList();
+       var result = new List<int>();
 
+        var cleanerRank = ranked.ToHashSet().ToArray();
+        int i = cleanerRank.Length - 1;
 
-        if (groupedTablo.First() == playerScores.First())
-            rankingSystem.Add(groupedTablo.Count);
-        else if (groupedTablo.First() > playerScores.First())
-            rankingSystem.Add(groupedTablo.Count + 1);
-
-        for (int i = 0; i < playerScores.Count; i++)
+        for (int j = 0; j < playerScores.Count; j++)
         {
-            var valuesLowerThenScores = groupedTablo.Where(x => x <= playerScores[i]).ToList();
-            var highestValueFromLowest = valuesLowerThenScores.FirstOrDefault();
-
-            if (highestValueFromLowest > 0)
+            bool rankFound = false;
+            while (!rankFound && i >= 0)
             {
-                if (playerScores[i] >= highestValueFromLowest)
+                if (playerScores[j] < cleanerRank[i])
                 {
-                    var rank = groupedTablo.IndexOf(highestValueFromLowest);
-                    rankingSystem.Add(rank + 1);
+                    result.Add(i + 2);
+                    rankFound = true;
+                }
+                else if (playerScores[j] == cleanerRank[i])
+                {
+                    result.Add(i + 1);
+                    rankFound = true;
+                }
+                else
+                {
+                    i--;
                 }
             }
 
+            if (!rankFound)
+            {
+                result.Add(1);
+            }
         }
 
-        return rankingSystem;
+        return result;
     }
 }
